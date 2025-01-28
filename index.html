@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .todo-app {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .todo-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .todo-header h1 {
+        font-size: 24px;
+        margin: 0;
+        color: #333;
+      }
+
+      .todo-input {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .todo-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      .todo-input button {
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .todo-input button:hover {
+        background-color: #45a049;
+      }
+
+      .todo-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .todo-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f9f9f9;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+      }
+
+      .todo-item .actions button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-left: 5px;
+      }
+
+      .todo-item .actions .edit {
+        color: #ffa500;
+      }
+
+      .todo-item .actions .delete {
+        color: #f44336;
+      }
+
+      @media (max-width: 480px) {
+        .todo-app {
+          padding: 15px;
+        }
+
+        .todo-header h1 {
+          font-size: 20px;
+        }
+
+        .todo-input input {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="todo-app">
+      <div class="todo-header">
+        <h1>To-Do List</h1>
+      </div>
+
+      <div class="todo-input">
+        <input type="text" id="taskInput" placeholder="Add a new task..." />
+        <button id="addTaskButton">Add</button>
+      </div>
+
+      <ul id="todoList" class="todo-list"></ul>
+    </div>
+
+    <script>
+      const taskInput = document.getElementById("taskInput");
+      const addTaskButton = document.getElementById("addTaskButton");
+      const todoList = document.getElementById("todoList");
+
+      // Function to create a new task element
+      function createTaskElement(taskText) {
+        const li = document.createElement("li");
+        li.className = "todo-item";
+
+        const taskTextSpan = document.createElement("span");
+        taskTextSpan.textContent = taskText;
+
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "actions";
+
+        const editButton = document.createElement("button");
+        editButton.textContent = "Edit";
+        editButton.className = "edit";
+        editButton.addEventListener("click", () => editTask(li, taskTextSpan));
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "delete";
+        deleteButton.addEventListener("click", () => deleteTask(li));
+
+        actionsDiv.appendChild(editButton);
+        actionsDiv.appendChild(deleteButton);
+
+        li.appendChild(taskTextSpan);
+        li.appendChild(actionsDiv);
+
+        return li;
+      }
+
+      // Add task
+      addTaskButton.addEventListener("click", () => {
+        const taskText = taskInput.value.trim();
+        if (taskText === "") {
+          alert("Please enter a task!");
+          return;
+        }
+
+        const taskElement = createTaskElement(taskText);
+        todoList.appendChild(taskElement);
+        taskInput.value = "";
+      });
+
+      // Edit task
+      function editTask(taskElement, taskTextSpan) {
+        const newText = prompt("Edit your task:", taskTextSpan.textContent);
+        if (newText !== null) {
+          taskTextSpan.textContent = newText.trim();
+        }
+      }
+
+      // Delete task
+      function deleteTask(taskElement) {
+        todoList.removeChild(taskElement);
+      }
+    </script>
+  </body>
+</html>
